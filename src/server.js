@@ -22,6 +22,7 @@ app.use(express.urlencoded({extended:false}));
 
 //Routes
 app.use(require('./routes/index.routes'));
+app.use(require('./routes/notes.routes'));
 
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));
