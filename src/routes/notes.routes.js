@@ -1,10 +1,15 @@
 const { Router } = require('express');
 const router = Router();
-const { renderNoteForm, createNewNote, renderNotes, renderEditForm, updateNote, deleteNote } = require('../controllers/notes.controller');
+const { renderNoteForm,
+    createNewNote,
+    renderNotes,
+    renderEditForm,
+    updateNote,
+    deleteNote } = require('../controllers/notes.controller');
 
 //New note
 router.get('/notes/add', renderNoteForm)
-router.post('/notes/add', createNewNote)
+router.post('/notes/new-note', createNewNote)
 
 //get notes
 router.get('/notes', renderNotes)
