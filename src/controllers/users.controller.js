@@ -1,5 +1,6 @@
 const usersCtrl = {};
 const User = require('../models/User');
+const passport = require('passport');
 
 usersCtrl.renderSignUpForm = (req,res) => {
     res.render('users/signup')
@@ -24,9 +25,10 @@ usersCtrl.signUp = async (req,res) => {
     } else {
         const email_user = await User.findOne({email: email});
         if (email_user) {
-            //Creo un nuevo error para mantener los campos, Fazt lo hace con flash
-            //req.flash("error_msg", "The Email is already in use.");
-            //res.redirect("/users/signup");
+            // Creo un nuevo error para mantener los campos, Fazt lo hace con flash
+            // req.flash("success_msg", "The Email is already in use.");
+            // res.render("users/signup");
+
             error_msg = "The Email is already in use."
             res.render('users/signup', 
             { error_msg,
@@ -46,11 +48,17 @@ usersCtrl.signUp = async (req,res) => {
 usersCtrl.renderSignInForm = (req,res) => {
     res.render('users/signin')
 }
-usersCtrl.signIn = (req,res) => {
-    res.send('signin')
-}
+usersCtrl.signIn = passport.authenticate('local',{
+    failureRedirect: '/users/signin',
+    successRedirect:'/notes',
+    failureFlash: true
+})
+
 usersCtrl.logOut = (req,res) => {
-    res.send('logout')
+    //req.session.user = null //pero passport ya lo hace
+    req.logOut();
+    req.flash('success_msg', 'You are successfully log out, hope to see you soon');
+    res.redirect('/users/signin');
 }
 
 module.exports = usersCtrl;
